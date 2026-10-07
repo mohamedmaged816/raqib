@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>رقيب — دعوة</title>
+  <style>
+    :root { --emerald:#22755c; --emerald-soft:#e0efe9; --ink:#1a2128; --gold:#c79c36; }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body {
+      margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      font-family:-apple-system,"SF Arabic",Segoe UI,Tahoma,sans-serif;
+      background:linear-gradient(160deg,#22755c,#194d3e); color:#fff; padding:24px;
+    }
+    .card {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+      border-radius:26px; padding:32px 24px; max-width:400px; width:100%; text-align:center;
+      backdrop-filter:blur(8px);
+    }
+    .ring { width:72px; height:72px; margin:0 auto 16px; border-radius:50%;
+      border:5px solid var(--gold); display:flex; align-items:center; justify-content:center; }
+    .ring b { font-size:30px; }
+    h1 { font-size:22px; margin:0 0 6px; font-weight:800; }
+    p  { font-size:15px; line-height:1.7; color:rgba(255,255,255,0.85); margin:0 0 20px; }
+    .code {
+      font-family:ui-monospace,Menlo,monospace; font-size:30px; letter-spacing:6px; font-weight:700;
+      background:rgba(255,255,255,0.12); border-radius:14px; padding:14px; margin:0 0 8px; direction:ltr;
+      user-select:all;
+    }
+    .hint { font-size:12px; color:rgba(255,255,255,0.7); margin:0 0 22px; }
+    .btn {
+      display:block; width:100%; padding:15px; border-radius:26px; font-size:16px; font-weight:700;
+      text-decoration:none; border:0; cursor:pointer; margin-bottom:10px;
+    }
+    .btn-primary { background:#fff; color:var(--emerald); }
+    .btn-ghost   { background:rgba(255,255,255,0.14); color:#fff; }
+    .foot { font-size:12px; color:rgba(255,255,255,0.6); margin-top:18px; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="ring"><b>🕌</b></div>
+    <h1 id="title">تطبيق رقيب</h1>
+    <p id="subtitle">لتتبّع الصلوات والأذكار والمحاسبة — بهدوء ورحمة.</p>
+
+    <div id="codeBlock" class="hidden">
+      <div class="code" id="code">--------</div>
+      <p class="hint">انسخ الكود، ثم افتح «أضف صديقًا» بعد التثبيت — سيُلصَق تلقائيًا.</p>
+      <button class="btn btn-ghost" id="copyBtn">📋 انسخ الكود</button>
+    </div>
+
+    <a class="btn btn-primary" id="iosBtn" href="https://apps.apple.com/app/id6768037619">📲 حمّل رقيب مجانًا — App Store</a>
+    <a class="btn btn-primary" id="androidBtn" href="https://play.google.com/store/apps/details?id=com.maged.raqib">📲 حمّل رقيب مجانًا — Google Play</a>
+
+    <div class="foot">بدون إعلانات ولا تتبّع · مجاني بالكامل 🤍</div>
+  </main>
+
+  <script>
+    (function () {
+      // One store button on a phone, both elsewhere (a desktop visitor may own either).
+      var ua = navigator.userAgent || '';
+      if (/Android/i.test(ua)) document.getElementById('iosBtn').classList.add('hidden');
+      else if (/iPhone|iPad|iPod/i.test(ua)) document.getElementById('androidBtn').classList.add('hidden');
+
+      var path = decodeURIComponent(location.pathname);
+      var addMatch  = path.match(/\/add\/([A-Za-z0-9]{4,12})/);
+      var joinMatch = path.match(/\/join\/([0-9a-fA-F-]{8,})/);
+
+      if (addMatch) {
+        var code = addMatch[1].toUpperCase();
+        document.getElementById('title').textContent = 'دعوة صداقة على رقيب';
+        document.getElementById('subtitle').textContent = 'أحدهم يدعوك لتتابعا الصلوات وتشجّعا بعضكما.';
+        document.getElementById('code').textContent = code;
+        document.getElementById('codeBlock').classList.remove('hidden');
+        var btn = document.getElementById('copyBtn');
+        btn.addEventListener('click', function () {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(code).then(function () {
+              btn.textContent = '✓ نُسخ الكود';
+            });
+          }
+        });
+        // Belt-and-suspenders: if the app is installed, try to hand off to it directly.
+        // (The Universal Link normally intercepts before this page even loads.)
+        window.location.href = 'raqib://add?code=' + code;
+      } else if (joinMatch) {
+        document.getElementById('title').textContent = 'دعوة لتحدٍّ جماعي على رقيب';
+        document.getElementById('subtitle').textContent = 'انضمّ إلى تحدٍّ للعبادة مع أصحابك.';
+        window.location.href = 'raqib://join?challenge=' + joinMatch[1];
+      }
+    })();
+  </script>
+</body>
+</html>

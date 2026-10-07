@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RAQIB — Privacy policy · رقيب — سياسة الخصوصية</title>
+  <style>
+    :root { --emerald:#22755c; --ink:#1a2128; --paper:#fbf8f1; --gold:#a47d24; }
+    @media (prefers-color-scheme: dark) { :root { --ink:#ece7da; --paper:#14191d; --gold:#d6ac4a; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); padding:24px 16px;
+      font:16px/1.7 -apple-system,"SF Arabic",Segoe UI,Tahoma,sans-serif; }
+    main { max-width:720px; margin:0 auto; }
+    h1 { color:var(--emerald); font-size:26px; }
+    @media (prefers-color-scheme: dark) { h1 { color:#5cc29f; } }
+    h2 { font-size:19px; margin-top:28px; }
+    h3 { font-size:16px; color:var(--gold); }
+    hr { border:0; border-top:1px solid rgba(127,127,127,0.25); margin:24px 0; }
+    code { font-family:ui-monospace,Menlo,monospace; font-size:0.9em; }
+    a { color:inherit; }
+    ul { padding-inline-start:22px; }
+  </style>
+</head>
+<body>
+<main>
+<h1>Privacy Policy — رقيب (Raqib)</h1>
+<p><strong>Last updated:</strong> 2026-10-07</p>
+<p>رقيب is a privacy-first app for iPhone and Android for tracking your prayers, adhkar, fasting, Quran reading, and self-accountability (muhasaba). This document explains, in plain language, what data the app handles and where it goes.</p>
+<hr>
+<h2>TL;DR</h2>
+<ul><li><strong>Almost everything stays on your phone.</strong> Your prayer records, muhasaba notes, khatma progress, and settings never leave your device unless you turn on muhasaba sync yourself.</li><li><strong>The only optional cloud feature is "الأخلّاء" (Akhilaa)</strong> — friend tracking. If you sign in for it, you give us an email + password and we sync your daily prayer status. You can delete the account permanently from inside the app at any time.</li><li><strong>No analytics. No ads. No third-party tracking.</strong> We do not sell, share, or rent your data. There are no advertising or analytics SDKs in this app.</li></ul>
+<hr>
+<h2>1. Data stored only on your device</h2>
+<p>Everything below is saved in your phone's local app storage (<code>UserDefaults</code> on iPhone, app-private DataStore on Android). It is never sent to our servers or any third party, except the muhasaba records if you turn on muhasaba sync (see 2b):</p>
+<ul><li>Your name (optional)</li><li>Your gender</li><li>Your prayer records (مسجد / بيت / لم تُؤدَّ for each of the 5 daily prayers)</li><li>Your sunnah, adhkar, daily-habit, and fasting status</li><li>Your daily muhasaba notes, intentions, sins/wins lists</li><li>Your Khatma (Quran reading) progress and goals</li><li>Your istighfar count</li><li>Your settings: location, calculation method, madhab, alarm configurations, theme, notification preferences</li></ul>
+<p>If you delete the app, all of this is permanently lost. There is no automatic cloud backup — on Android the app opts out of Google's automatic app backup. You can export a backup file yourself from Settings → بياناتي (My data); that file is saved wherever you choose and is not sent to us.</p>
+<hr>
+<h2>2. Data sent to third parties</h2>
+<h3>a. Aladhan API (prayer time calculation)</h3>
+<p>When the app needs to compute prayer times, it sends a single HTTPS request to <strong>api.aladhan.com</strong> containing:</p>
+<ul><li>Your latitude and longitude</li><li>The chosen calculation method (e.g., Umm al-Qura)</li><li>The chosen Asr school (Hanafi or majority)</li><li>The date</li></ul>
+<p>No identifier is sent. Aladhan does not know who you are. They do not retain personal data per their public API documentation.</p>
+<p>If you do not allow location access, the app uses the city you pick manually from a list — same data is sent.</p>
+<h3>b. Supabase (Akhilaa friends feature only)</h3>
+<p>If — and only if — you create an account inside the Akhilaa screen, the following is stored on Supabase servers:</p>
+<ul><li>Your email address</li><li>Your hashed password (we never see the plaintext)</li><li>An auto-generated 8-character friend code</li><li>A unique username you choose (so friends can tell people with the same name apart)</li><li>Your display name (if you set one)</li><li>Your friendships (which other accounts you've linked with), including requests you sent that are still waiting</li><li>Your daily prayer status: which of the 5 prayers you logged, where (mosque / home / missed), per date — subject to the sharing mode you choose</li><li>The du'ā, thank-you and reminder messages you send to friends</li><li>A push-notification token for your device, so friends' du'ās, reminders and friend requests reach you. It is removed when you sign out or delete your account.</li><li><strong>Only if you turn on «مزامنة سجل المحاسبة» (muhasaba sync):</strong> your daily muhasaba records — intentions, sins and good deeds, notes — so they appear on your other devices. This is off by default, belongs to the account that turned it on, and when you turn it off the app offers to delete the server copy.</li></ul>
+<p>Your friends see your username, display name, and the sharing mode you chose (all, only what you prayed, or nothing), so a blank day is never mistaken for a missed one.</p>
+<p>This data is protected by Postgres Row-Level Security so only you and the friends you explicitly add can see it. Supabase is GDPR-compliant and the project is hosted in the EU region.</p>
+<p>If you do not sign in to Akhilaa, <strong>none of this data exists on any server</strong>.</p>
+<h3>c. Push notification delivery (only if you sign in to Akhilaa)</h3>
+<p>To deliver a friend's du'ā, reminder or friend request when the app is closed, the message is handed to the phone platform's push service: <strong>Apple Push Notification service</strong> on iPhone, <strong>Firebase Cloud Messaging</strong> (Google) on Android. The push contains the sender's display name and the kind of message — never your prayer records. Your device's push token is stored with your account (see above) and deleted when you sign out or delete the account.</p>
+<hr>
+<h2>3. Permissions the app may request</h2>
+<ul><li><strong>Location (When In Use; approximate on Android):</strong> to compute prayer times and the Qibla for your area. It is read only while you use the app — never in the background. Optional — you can pick a city manually instead.</li><li><strong>Notifications:</strong> to remind you of prayer times, adhkar, and muhasaba. Optional — the app works without them.</li><li><strong>Alarms &amp; reminders (Android):</strong> so the adhan fires at the exact prayer time. Without it Android may deliver reminders a few minutes late.</li><li><strong>Camera (iPhone):</strong> only when you choose to scan a friend's QR code in Akhilaa. The image is read on your device to find the code and is never saved or sent anywhere. On Android the scan is done by Google Play services' on-device code scanner, so the app itself never gets camera access. Optional — you can type the code instead.</li></ul>
+<p>We do not request access to: contacts, photos, microphone, calendar, health data, motion, or Bluetooth.</p>
+<hr>
+<h2>4. Children</h2>
+<p>The app is rated 4+ on the App Store and is intended for everyone on Google Play. It does not knowingly collect data from children under 13. The Akhilaa feature is opt-in and requires creating an account; we recommend parental supervision.</p>
+<hr>
+<h2>5. Account deletion</h2>
+<p>Inside the app: <strong>الأخلّاء (Akhilaa) → menu → حذف الحساب نهائيًا</strong> (also under Settings → profile). This action:</p>
+<ul><li>Deletes your <code>auth.users</code> row in Supabase</li><li>Cascade-deletes your profile, friend code, friendships, and prayer status from our servers</li><li>Cannot be reversed</li><li>Does not affect data stored locally on your device</li></ul>
+<p>There is no waiting period. Deletion is immediate.</p>
+<p>If you no longer have the app, request deletion by email (see Contact) from the address you signed up with, or follow the steps at <strong>https://mohamedmaged816.github.io/raqib/delete-account.html</strong>. We delete the account and everything linked to it within 7 days and confirm by email.</p>
+<hr>
+<h2>6. Data retention</h2>
+<ul><li><strong>Local data:</strong> kept until you delete the app or the data via the app's UI. No automatic expiry.</li><li><strong>Akhilaa cloud data:</strong> kept until you delete your account. We do not run any retention sweep that would delete inactive accounts.</li></ul>
+<hr>
+<h2>7. Encryption and security</h2>
+<ul><li>All network traffic uses standard HTTPS (TLS 1.2+).</li><li>Passwords are hashed by Supabase using the standard bcrypt-style algorithm. We never see plaintext passwords.</li><li>We use no custom encryption, so iOS export compliance is set to "uses standard encryption only" (<code>ITSAppUsesNonExemptEncryption: NO</code>).</li><li>On Android, app data lives in app-private storage that other apps cannot read, and it is excluded from cloud backup and device-to-device transfer.</li></ul>
+<hr>
+<h2>8. Changes to this policy</h2>
+<p>We will update this page if we change what data we handle. The date at the top of this document reflects the most recent revision.</p>
+<hr>
+<h2>9. Contact</h2>
+<p>For privacy questions, account-deletion help, or data requests, email:</p>
+<p><strong>mohamedmaged3002@gmail.com</strong></p>
+<hr>
+<p><em>رقيب is built and operated by an independent developer. The app is not affiliated with any government, religious authority, or the King Fahd Complex.</em></p>
+<hr>
+<p><a href="delete-account.html">Delete your account · حذف الحساب</a></p>
+</main>
+</body>
+</html>
